@@ -1,20 +1,29 @@
 #!/usr/bin/env python3
 
+import io  ;
+import os  ; 
+import sys ;
 
-def read_biblines(bbls) :
-  bufls = [] ; 
-  for l in bbls :
-    if l.startswith('@') : 
-      bufls.append(l.strip()) ; 
-    elif l.strip() == '}':
-      bufls.append(l.strip()) ; 
-      yield bufls ;
-      bufls = [] ; 
-    elif not l.strip() :
-      continue ;
-    else :
-      bufls.append(l.strip()) ; 
+try :
+  import bibtexparser as bibp ; 
+except ImportError :
+  print("Required module bibtexparser is uninstalled.\nRun pip install bibtexparser", file=sys.stderr) ; 
+  sys.exit(1) ; 
 
-def write_bibblines(bibdict) : 
-  for key in sorted(bibdict) : 
+def main() : 
 
+  # output prefix
+  outpref = sys.argv[3] ; 
+
+  # if there are any new files in the <arxiv-folder> missing from bibfiles 
+  # list them
+  if arvix_folder : 
+    paperids = [os.path.splitext(fnm)[0] for fnm in os.listdir(arxiv_folder)] ; 
+    # strip version suffixes from paperids (e.g. 1904.04063v2)
+    mpaperids = [pid for pid in paperids if pid not in bibdb] ; 
+    print("Arxiv paperids missing from all bib databases\t{0}".format(' '.join(mpaperids))) ; 
+    
+  return 0 ; 
+
+if __name__ == '__main__' :
+  main() ; 
